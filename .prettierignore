@@ -1,0 +1,10 @@
+.next/
+.turbo/
+_next/
+__tmp__/
+dist/
+target/
+build/
+out/
+.github/
+coverage/
