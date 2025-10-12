@@ -1,9 +1,11 @@
-# AI_INSTRUCTION.md
+# AI_GUIDELINES.md
 
 ## Context
 
-**Project name:** Playlists  
-**Purpose:** An app for creating shared ratable lists of games. The app lets users sign in with Steam, create “playlists” of games, invite their Steam friends, add games (via Steam API), and vote (Yes / Maybe / No). Games are sorted by aggregated votes to produce a “what to play” list.
+**Project name:** Playlist
+**Purpose:** An app for creating shared ratable lists of games. The app lets users sign in with Steam, create
+“playlists” of games, invite their Steam friends, add games (via Steam API), and vote (Yes / Maybe / No). Games are
+sorted by aggregated votes to produce a “what to play” list.
 **Deployment target:** Vercel
 
 ---
@@ -64,6 +66,7 @@
 - Tailwind CSS provides the styling foundation.
 - `shadcn/ui` provides consistent, accessible React components.
 - Default theme: dark mode.
+- The website is responsive (starting from 375px width) and accessible.
 
 ### Folder Structure
 
