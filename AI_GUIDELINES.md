@@ -36,6 +36,24 @@ sorted by aggregated votes to produce a “what to play” list.
 - Migrations managed through `prisma migrate`.
 - Schemas and queries live in `src/libs/prisma`.
 
+#### Prisma Configuration
+
+The project uses a **custom Prisma setup** via `prisma.config.ts` at the project root:
+
+- **Schema location**: `src/libs/prisma/schema.prisma`
+- **Migrations directory**: `src/libs/prisma/migrations/`
+- **Generated client output**: `src/libs/prisma/generated/` (relative to schema)
+- **Views directory**: `src/libs/prisma/views/`
+- **TypedSQL queries**: `src/libs/prisma/queries/`
+
+The Prisma client is exported as a singleton from `src/libs/prisma/index.ts` with:
+
+- Global instance caching for Next.js hot-reload compatibility
+- Development logging enabled (`query`, `error`, `warn`)
+- Production logging limited to `error` only
+
+The generated client directory is git-ignored via `src/libs/prisma/.gitignore`.
+
 ### Server Logic
 
 - All data mutations and reads should use **Server Actions**.
@@ -99,5 +117,6 @@ src/libs/* - libraries
 8. **Place integration logic** (Steam API, helpers, etc.) inside `src/libs/`.
 9. **Update this file** when architectural decisions change or new systems are introduced.
 10. **Follow naming conventions** and structure as defined in this document.
+11. **Run terminal commands one by one** - do not chain commands with `&&`, `||`, or `;`. Execute each command separately.
 
 ---
