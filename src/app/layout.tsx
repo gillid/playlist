@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
-import { ListMusic } from 'lucide-react';
+import { AppIcon } from '@/components/AppIcon';
 import './globals.css';
 
 const geistSans = Geist({
@@ -31,7 +31,7 @@ export default function RootLayout({
         <header className='border-b border-border bg-card'>
           <div className='container mx-auto px-4 py-4'>
             <div className='flex items-center gap-3'>
-              <ListMusic aria-hidden className='h-6 w-6' />
+              <AppIcon light={true} />
               <h1 className='text-xl font-semibold'>Playlist</h1>
             </div>
           </div>
