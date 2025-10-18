@@ -1,4 +1,4 @@
-import { LogIn } from 'lucide-react';
+import { SteamIcon } from '@/components/SteamIcon';
 
 export default function Home() {
   return (
@@ -13,8 +13,12 @@ export default function Home() {
             type='button'
             className='w-full flex items-center justify-center gap-3 px-6 py-4 bg-card hover:bg-card/80 border border-border rounded-lg transition-colors text-card-foreground font-medium text-lg'
           >
-            <LogIn className='h-6 w-6' aria-hidden />
-            <span>Steam</span>
+            <img
+              src='/steam_sign_in.png'
+              height={35}
+              width={180}
+              alt='Sign In through Steam'
+            />
           </button>
         </div>
       </div>
