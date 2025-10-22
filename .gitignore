@@ -42,3 +42,6 @@ next-env.d.ts
 
 # JetBrains
 .junie
+
+# generated code (eg. prisma-client)
+generated

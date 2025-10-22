@@ -10,6 +10,5 @@ export type ServerEnv = ClientEnv & {
   PRISMA_DATABASE_URL: string;
   VERCEL_OIDC_TOKEN: string;
   BETTER_AUTH_SECRET: string;
-  NEXTAUTH_URL?: string;
   STEAM_API_KEY: string;
 };

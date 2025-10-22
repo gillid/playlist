@@ -12,19 +12,19 @@ sorted by aggregated votes to produce a “what to play” list.
 
 ## Stack Overview
 
-| Layer                    | Technology                               | Reasoning                                                                 |
-| ------------------------ | ---------------------------------------- | ------------------------------------------------------------------------- |
-| **Framework**            | Next.js 15 (App Router)                  | Modern React architecture, supports Server Components and Server Actions. |
-| **Database**             | Prisma Postgres (via Vercel Marketplace) | Serverless PostgreSQL with built-in connection pooling and managed setup. |
-| **ORM**                  | Prisma ORM                               | Schema-first approach, type-safe client, easy migrations.                 |
-| **Auth**                 | NextAuth (v5) + Custom Steam provider    | Handles sessions, cookies, and OpenID-based login via Steam.              |
-| **Styling**              | Tailwind CSS + shadcn/ui                 | Consistent and fast UI development with composable components.            |
-| **Icons**                | lucide-react                             | Lightweight SVG icon library.                                             |
-| **Validation**           | Zod                                      | For schema and input validation.                                          |
-| **Client data fetching** | SWR                                      | Used selectively for client-side revalidation and caching.                |
-| **External API**         | Steam Web API                            | Game search, details, and user data.                                      |
-| **Language**             | TypeScript                               | End-to-end type safety.                                                   |
-| **Package manager**      | pnpm                                     | Efficient, deterministic installs.                                        |
+| Layer                    | Technology                               | Reasoning                                                                       |
+| ------------------------ | ---------------------------------------- | ------------------------------------------------------------------------------- |
+| **Framework**            | Next.js 15 (App Router)                  | Modern React architecture, supports Server Components and Server Actions.       |
+| **Database**             | Prisma Postgres (via Vercel Marketplace) | Serverless PostgreSQL with built-in connection pooling and managed setup.       |
+| **ORM**                  | Prisma ORM                               | Schema-first approach, type-safe client, easy migrations.                       |
+| **Auth**                 | Better Auth + Custom Steam plugin        | Modern authServer framework with custom Steam OpenID plugin for authentication. |
+| **Styling**              | Tailwind CSS + shadcn/ui                 | Consistent and fast UI development with composable components.                  |
+| **Icons**                | lucide-react                             | Lightweight SVG icon library.                                                   |
+| **Validation**           | Zod                                      | For schema and input validation.                                                |
+| **Client data fetching** | SWR                                      | Used selectively for client-side revalidation and caching.                      |
+| **External API**         | Steam Web API                            | Game search, details, and user data.                                            |
+| **Language**             | TypeScript                               | End-to-end type safety.                                                         |
+| **Package manager**      | pnpm                                     | Efficient, deterministic installs.                                              |
 
 ---
 
@@ -42,7 +42,7 @@ The project uses a **custom Prisma setup** via `prisma.config.ts` at the project
 
 - **Schema location**: `src/libs/prisma/schema.prisma`
 - **Migrations directory**: `src/libs/prisma/migrations/`
-- **Generated client output**: `src/libs/prisma/generated/` (relative to schema)
+- **Generated client output**: `generated/prisma` (relative to the repo root; configured in `schema.prisma`)
 - **Views directory**: `src/libs/prisma/views/`
 - **TypedSQL queries**: `src/libs/prisma/queries/`
 
@@ -51,8 +51,6 @@ The Prisma client is exported as a singleton from `src/libs/prisma/index.ts` wit
 - Global instance caching for Next.js hot-reload compatibility
 - Development logging enabled (`query`, `error`, `warn`)
 - Production logging limited to `error` only
-
-The generated client directory is git-ignored via `src/libs/prisma/.gitignore`.
 
 ### Server Logic
 
@@ -63,8 +61,8 @@ The generated client directory is git-ignored via `src/libs/prisma/.gitignore`.
 
 ### Authentication
 
-- Authentication managed by **NextAuth**.
-- Custom **Steam OpenID provider** - `src/libs/steam/`.
+- Authentication managed by **Better Auth**.
+- Custom **Steam OpenID plugin** - `src/libs/steam/`.
 - Sessions persisted in the database using Prisma adapter.
 
 ### External API Access
@@ -96,12 +94,16 @@ src/libs/* - libraries
 
 ### Environment Variables
 
-| Variable          | Description                                                |
-| ----------------- | ---------------------------------------------------------- |
-| `DATABASE_URL`    | Connection string (managed by Vercel Prisma integration).  |
-| `NEXTAUTH_URL`    | Deployment URL (e.g. `https://steamplaylists.vercel.app`). |
-| `NEXTAUTH_SECRET` | Secret for JWT/session signing.                            |
-| `STEAM_API_KEY`   | Steam Web API key.                                         |
+| Variable                | Description                                                               |
+| ----------------------- | ------------------------------------------------------------------------- |
+| `NEXT_PUBLIC_APP_URL`   | App URL (e.g. http://localhost:3000 or your Vercel domain).               |
+| `NEXT_PUBLIC_AUTH_PATH` | Auth base path (e.g. `/api/auth`).                                        |
+| `DATABASE_URL`          | Prisma connection string (Vercel Postgres).                               |
+| `POSTGRES_URL`          | (Optional) Vercel pooled Postgres URL; exposed by the Vercel integration. |
+| `PRISMA_DATABASE_URL`   | (Optional) Overrides Prisma's datasource URL when needed.                 |
+| `BETTER_AUTH_SECRET`    | Secret for Better Auth session/JWT signing.                               |
+| `STEAM_API_KEY`         | Steam Web API key.                                                        |
+| `VERCEL_OIDC_TOKEN`     | (Optional) Vercel OIDC token for service-to-service auth if applicable.   |
 
 ---
 

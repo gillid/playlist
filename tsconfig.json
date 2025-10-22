@@ -23,6 +23,9 @@
       }
     ],
     "paths": {
+      "@generated/*": [
+        "./generated/*"
+      ],
       "@/components/*": [
         "./src/components/*"
       ],
