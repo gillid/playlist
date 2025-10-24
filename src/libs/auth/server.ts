@@ -5,6 +5,7 @@ import { nextCookies } from 'better-auth/next-js';
 import { prisma } from '@/libs/prisma';
 import { getServerEnv } from '@/libs/env/server';
 import { sharedOptions } from './sharedOptions';
+import { steamAuthServer } from './steam-plugin/steamAuthServer';
 
 export const authServer = betterAuth({
   ...sharedOptions,
@@ -13,6 +14,7 @@ export const authServer = betterAuth({
     provider: 'postgresql',
   }),
   plugins: [
+    steamAuthServer(),
     nextCookies(),
   ],
   session: {

@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
-import { AppIcon } from '@/components/AppIcon';
 import './globals.css';
+import { Header } from './Header';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -26,17 +26,12 @@ export const RootLayout = ({
   return (
     <html lang='en' className='dark' suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-dvh flex flex-col`}
       >
-        <header className='border-b border-border bg-card'>
-          <div className='container mx-auto px-4 py-4'>
-            <div className='flex items-center gap-3'>
-              <AppIcon light={true} />
-              <h1 className='text-xl font-semibold'>Playlist</h1>
-            </div>
-          </div>
-        </header>
-        {children}
+        <Header />
+        <main className='flex flex-1 items-center justify-center bg-background text-foreground'>
+          {children}
+        </main>
       </body>
     </html>
   );
