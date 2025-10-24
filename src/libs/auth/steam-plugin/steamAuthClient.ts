@@ -1,14 +1,11 @@
-import { getClientEnv } from '@/libs/env/client';
 import type { steamAuthServer } from './steamAuthServer';
 
-export const steamAuthClient = () => {
+export const steamAuthClient = (baseUrl: string, authPath: string) => {
   return {
     id: 'steam-client',
     $InferServerPlugin: {} as ReturnType<typeof steamAuthServer>,
     getActions: () => ({
       steamSignIn: async () => {
-        const baseUrl = getClientEnv('NEXT_PUBLIC_APP_URL');
-        const authPath = getClientEnv('NEXT_PUBLIC_AUTH_PATH');
         const returnTo = `${baseUrl}${authPath}/steam/callback`;
 
         const url = new URL('https://steamcommunity.com/openid/login');

@@ -92,6 +92,59 @@ src/components - ui components, design-system
 src/libs/* - libraries
 ```
 
+### Libraries Assembly (Singletons and Initialization Order)
+
+Lint enforcement (mirrors eslint.config.mjs):
+
+- In application and library code (`src/**/*.{ts,tsx,js,jsx}`), imports from `@/libs-origin/*` are forbidden. Use the public `@/libs/*` alias instead.
+- In raw libraries (`src/libs/**/*.{ts,tsx,js,jsx}`), both `@/libs/*` and `@/libs-origin/*` are forbidden to prevent cross-lib coupling and accidental dependency on assembled singletons. Use relative imports within the same library. Integration happens only via the assembly layer.
+- Inside the assembly overlay (`src/libs/_assembly/**`), importing from `@/libs/*` is forbidden to avoid self-referencing; use `@/libs-origin/*` to wire raw libs together.
+
+To avoid ad-hoc singletons, circular dependencies, and inconsistent init order, the project uses an alias-based assembly overlay:
+
+- Location: `src/libs/_assembly/`
+  - `assembly.server.ts` — constructs server-only singletons (e.g., logger, Steam API, auth server) using environment, Prisma, etc.
+  - `assembly.client.ts` — constructs client-only singletons (e.g., auth client).
+  - Subfolders mirror public library paths to override specific entry points, e.g.:
+    - `src/libs/_assembly/auth/server.ts` → re-exports `authServer` from `assembly.server.ts`.
+    - `src/libs/_assembly/auth/client.ts` → re-exports `authClient` from `assembly.client.ts`.
+    - `src/libs/_assembly/logger/index.ts` → re-exports `logger` from `assembly.server.ts`.
+- Current assembled libs: `logger`, `steam`, `authServer`, `authClient`.
+
+#### Path alias overlay (proxy without modifying raw libraries)
+
+Libraries remain assembly-agnostic in `src/libs/*`. We expose assembled instances by placing override files in `src/libs/_assembly/*` and using TypeScript path priority:
+
+- tsconfig paths:
+  - `@/libs/*` → `src/libs/_assembly/*` (first) then falls back to `src/libs/*`
+  - `@/libs-origin/*` → `src/libs/*` (for assembly internals only)
+- How it resolves:
+  - If a matching file exists under `_assembly`, it is used (assembled override).
+  - Otherwise, it automatically falls back to the raw library under `src/libs/*`.
+
+Examples:
+
+```ts
+// Public imports (prefer these):
+import { authServer } from '@/libs/auth/server'; // overridden by _assembly/auth/server.ts
+import { authClient } from '@/libs/auth/client'; // overridden by _assembly/auth/client.ts
+import { logger } from '@/libs/logger'; // overridden by _assembly/logger/index.ts
+// Deep types/utilities untouched:
+import type { GetPlayerSummaries } from '@/libs/steam/APIResponseTypes'; // falls back to raw file
+```
+
+Notes:
+
+- If your code imports a path like `@/libs/logger/server` but only `_assembly/logger/index.ts` exists, it will fall back to the raw `src/libs/logger/server.ts`. Prefer importing `@/libs/logger` for the assembled logger, or add an override at `_assembly/logger/server.ts` if you need that exact path.
+- This pattern lets you override only what you need. Deep files like `APIResponseTypes.ts` are automatically forwarded to the raw library when no override exists.
+
+Guidelines:
+
+- Initialize cross-cutting libs (e.g., logger, external API clients) inside `assembly.server.ts` (server) or `assembly.client.ts` (client) and re-export them via small `_assembly` entry points that mirror the desired public import path.
+- Use the public `@/libs/...` paths in application code; avoid importing from `@/libs-origin/...` outside of the assembly.
+- In raw libraries, keep modules self-contained and use relative imports only; never depend on assembled singletons.
+- Be mindful of top-level side effects. If you encounter circular init, move usage into functions or split responsibilities to break cycles.
+
 ### Environment Variables
 
 | Variable                | Description                                                               |

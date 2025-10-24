@@ -30,6 +30,10 @@
         "./src/components/*"
       ],
       "@/libs/*": [
+        "./src/libs/_assembly/*",
+        "./src/libs/*"
+      ],
+      "@/libs-origin/*": [
         "./src/libs/*"
       ]
     }

@@ -1,17 +1,16 @@
 import 'server-only';
 import { createAuthEndpoint } from 'better-auth/api';
-import { BetterAuthPlugin } from 'better-auth';
+import type { BetterAuthPlugin } from 'better-auth';
 import { setSessionCookie } from 'better-auth/cookies';
-import { steam } from '@/libs/steam/server';
-import { logger } from '@/libs/logger/server';
 import { extractSteamId } from './extractSteamId';
 import { verifySteamAuth } from './verifySteamAuth';
+import type { Steam, Logger } from './types';
 
 /**
  * Steam authentication plugin for better-authServer
  * Uses OpenID 2.0 protocol instead of standard OAuth
  */
-export const steamAuthServer = () => {
+export const steamAuthServer = (steam: Steam, logger: Logger) => {
   return {
     id: 'steam',
     endpoints: {
@@ -40,7 +39,7 @@ export const steamAuthServer = () => {
             }
             logger.info(`got steamId: ${steamId}`);
 
-            await verifySteamAuth(requestUrl.searchParams);
+            await verifySteamAuth(requestUrl.searchParams, logger);
             logger.info('Steam authentication verified');
 
             const playersSummaries = await steam.getPlayerSummaries(steamId);

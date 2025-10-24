@@ -1,8 +1,14 @@
-import { createAuthClient } from 'better-auth/react';
-import { sharedOptions } from './sharedOptions';
+import { createAuthClient as createBetterAuthClient } from 'better-auth/react';
 import { steamAuthClient } from './steam-plugin/steamAuthClient';
 
-export const authClient = createAuthClient({
-  ...sharedOptions,
-  plugins: [steamAuthClient()],
-});
+export const createAuthClient = (options: {
+  baseURL: string;
+  basePath: string;
+}) => {
+  return createBetterAuthClient({
+    appName: 'Playlist',
+    baseURL: options.baseURL,
+    basePath: options.basePath,
+    plugins: [steamAuthClient(options.baseURL, options.basePath)],
+  });
+};

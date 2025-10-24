@@ -1,6 +1,9 @@
-import { logger } from '@/libs/logger/server';
+import type { Logger } from './types';
 
-export const verifySteamAuth = async (searchParams: URLSearchParams) => {
+export const verifySteamAuth = async (
+  searchParams: URLSearchParams,
+  logger: Logger
+) => {
   searchParams.set('openid.mode', 'check_authentication');
 
   const response = await fetch('https://steamcommunity.com/openid/login', {
