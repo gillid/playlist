@@ -3,7 +3,7 @@ import defaultTheme from 'tailwindcss/defaultTheme';
 module.exports = {
   content: [
     './src/app/**/*.{ts,tsx}',
-    './src/components/**/*.{ts,tsx}',
+    './src/ui/**/*.{ts,tsx}',
   ],
   theme: {
     extend: {

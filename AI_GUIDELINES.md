@@ -80,16 +80,56 @@ The Prisma client is exported as a singleton from `src/libs/prisma/index.ts` wit
 ### UI / Styling
 
 - Tailwind CSS provides the styling foundation.
-- `shadcn/ui` provides consistent, accessible React components.
-- Default theme: dark mode.
+- We use `shadcn/ui` primitives that live in `src/ui` (copy-to-repo pattern). Always import UI primitives from `@/ui/*`.
+- Default theme: dark mode. Base styles are defined in `src/app/(layout)/globals.css` (configured in `components.json`).
 - The website is responsive (starting from 375px width) and accessible.
+
+#### shadcn/ui usage (mandatory conventions)
+
+- Prefer shadcn components over raw HTML for interactive/form elements:
+  - Use `@/ui/button` instead of `<button className=...>`.
+  - Use `@/ui/input` instead of `<input className=...>`.
+  - Use `@/ui/card` for surface containers instead of bespoke bordered divs.
+- Import paths and aliases:
+  - UI primitives: `import { Button } from '@/ui/button'`.
+  - Utilities: `import { cn } from '@/ui/utils'`.
+- Accessibility:
+  - Where shadcn components wrap Radix primitives (e.g., Dialog, Dropdown), prefer them over custom implementations to ensure keyboard and ARIA support.
+- Client vs Server Components:
+  - Keep most UI as Server Components; only wrap interactive primitives that require client JS. Compose client wrappers sparsely around server-rendered content.
+- Styling:
+  - Avoid hand-rolling focus rings, radii, or color tokens. Use the provided variants (via `cva`) and Tailwind tokens. Extend variants in the component file if needed rather than inlining long class strings.
+
+Examples:
+
+- Button and Input usage in a form:
+
+  ```tsx
+  import { Button } from '@/ui/button';
+  import { Input } from '@/ui/input';
+
+  <form action={createSomething} className='flex gap-2 max-w-md'>
+    <Input name='name' placeholder='Name' className='flex-1' required />
+    <Button type='submit'>Create</Button>
+  </form>;
+  ```
+
+- Card as a list item surface:
+
+  ```tsx
+  import { Card, CardContent } from '@/ui/card';
+
+  <Card>
+    <CardContent className='p-3'>...</CardContent>
+  </Card>;
+  ```
 
 ### Folder Structure
 
 ```
-src/app - app composition
-src/components - ui components, design-system
-src/libs/* - libraries
+src/app        - app composition (routes, layouts, pages)
+src/ui         - shadcn/ui primitives and design-system (Button, Input, Card, utils)
+src/libs/*     - libraries (raw + assembled via _assembly overlay)
 ```
 
 ### Libraries Assembly (Singletons and Initialization Order)
@@ -162,17 +202,19 @@ Guidelines:
 
 ## Rules for AI Agents
 
-1. **Use Server Actions** for all business logic and database operations.
-2. **Do not create new API routes** unless required for external integration.
-3. **Always use Prisma Client** for database access.
-4. **Validate all user input** with Zod.
-5. **Use SWR only** for client-side caching or live UI updates.
-6. **Keep UI consistent** with Tailwind + shadcn.
-7. **Write strictly typed code** (`.tsx` + TypeScript).
-8. **Place integration logic** (Steam API, helpers, etc.) inside `src/libs/`.
-9. **Update this file** when architectural decisions change or new systems are introduced.
-10. **Follow naming conventions** and structure as defined in this document.
-11. **Run terminal commands one by one** - do not chain commands with `&&`, `||`, or `;`. Execute each command separately.
+1. Use Server Actions for all business logic and database operations.
+2. Do not create new API routes unless required for external integration.
+3. Always use Prisma Client for database access.
+4. Validate all user input with Zod.
+5. Use SWR only for client-side caching or live UI updates.
+6. UI must use shadcn/ui primitives from `@/ui/*` over raw HTML elements:
+   - Use `Button`, `Input`, `Card`, etc., instead of hand-written className strings.
+   - Extend variants in component files if needed; avoid per-usage ad-hoc styling.
+7. Write strictly typed code (`.tsx` + TypeScript) with proper imports from `@/ui/*`, `@/libs/*`.
+8. Place integration logic (Steam API, helpers, etc.) inside `src/libs/` and import via `@/libs/*` public entry points.
+9. Update this file when architectural decisions change or new systems are introduced.
+10. Follow naming conventions and structure as defined in this document.
+11. Run terminal commands one by one — do not chain with `&&`, `||`, or `;`. Execute each command separately.
 
 ---
 

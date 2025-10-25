@@ -1,7 +1,7 @@
 import { headers } from 'next/headers';
 import Image from 'next/image';
 import { authServer } from '@/libs/auth/server';
-import { AppIcon } from '@/components/AppIcon';
+import { AppIcon } from '@/ui/AppIcon';
 
 const HeaderUser = async () => {
   const session = await authServer.api.getSession({
