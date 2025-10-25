@@ -40,7 +40,7 @@ sorted by aggregated votes to produce a “what to play” list.
 
 The project uses a **custom Prisma setup** via `prisma.config.ts` at the project root:
 
-- **Schema location**: `src/libs/prisma/schema.prisma`
+- **Schema location**: `src/libs/prisma` (`schema.prisma` and nested `schema/*.prisma` files)
 - **Migrations directory**: `src/libs/prisma/migrations/`
 - **Generated client output**: `generated/prisma` (relative to the repo root; configured in `schema.prisma`)
 - **Views directory**: `src/libs/prisma/views/`
