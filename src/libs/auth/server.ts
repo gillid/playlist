@@ -3,13 +3,13 @@ import { betterAuth } from 'better-auth';
 import { prismaAdapter } from 'better-auth/adapters/prisma';
 import { nextCookies } from 'better-auth/next-js';
 import { steamAuthServer } from './steam-plugin/steamAuthServer';
-import type { Steam, Logger } from './steam-plugin/types';
+import type { Prisma, Steam, Logger } from './steam-plugin/types';
 
 export const createAuthServer = (options: {
   secret: string;
   baseURL: string;
   basePath: string;
-  prisma: Parameters<typeof prismaAdapter>[0];
+  prisma: Prisma;
   steam: Steam;
   logger: Logger;
 }) => {
@@ -22,7 +22,7 @@ export const createAuthServer = (options: {
       provider: 'postgresql',
     }),
     plugins: [
-      steamAuthServer(options.steam, options.logger),
+      steamAuthServer(options.prisma, options.steam, options.logger),
       nextCookies(),
     ],
     session: {

@@ -175,3 +175,23 @@ Guidelines:
 11. **Run terminal commands one by one** - do not chain commands with `&&`, `||`, or `;`. Execute each command separately.
 
 ---
+
+## Prisma Modeling Guidelines
+
+We aim to keep the database layer simple and predictable.
+
+- Prefer the simplest schema that satisfies the use case. Avoid unnecessary complexity in new models (e.g., extra audit fields, duplicate join models, or premature abstractions). When in doubt, start minimal and evolve via migrations.
+- Source of truth for model details is the Prisma schema files. Do not duplicate per-model field descriptions in this document.
+- Where to find the schema and structure:
+  - Root schema and config live under `src/libs/prisma`.
+  - Generator/datasource and the `User` model are in `src/libs/prisma/schema.prisma`.
+  - Domain schemas live in `src/libs/prisma/schema/*.prisma` (e.g., `auth.prisma`, `steam.prisma`).
+- Use explicit relations with clear names. Only introduce separate join models when you need extra data on the relation; otherwise, prefer implicit many-to-many.
+- Organize model fields consistently: list local/scalar fields first (ids, primitives, enums, timestamps, and FK scalar columns like `userId`), then add one empty line, then list all relation fields (single or list relations, including back-relations). Keep indexes/uniques and `@@map` at the bottom of the model. This is a non-functional style rule to keep schemas readable and uniform.
+- Enforce authorization and business rules in Server Actions; use database constraints for invariants (uniques, FKs, cascades).
+
+### Steam IDs (SteamID64)
+
+- SteamID64 is an unsigned 64-bit integer (example: `76561197994268561`).
+- We deliberately store it as a `String` in Prisma and treat it as a string throughout the app because JavaScript numbers cannot safely represent all 64-bit integers.
+- Validation: accept only decimal digit strings (no formatting). Do not parse into Number; if you need arithmetic or comparison, use BigInt in memory but keep DB and JSON as strings.

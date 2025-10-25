@@ -4,13 +4,17 @@ import type { BetterAuthPlugin } from 'better-auth';
 import { setSessionCookie } from 'better-auth/cookies';
 import { extractSteamId } from './extractSteamId';
 import { verifySteamAuth } from './verifySteamAuth';
-import type { Steam, Logger } from './types';
+import type { Prisma, Steam, Logger } from './types';
 
 /**
  * Steam authentication plugin for better-authServer
  * Uses OpenID 2.0 protocol instead of standard OAuth
  */
-export const steamAuthServer = (steam: Steam, logger: Logger) => {
+export const steamAuthServer = (
+  prisma: Prisma,
+  steam: Steam,
+  logger: Logger
+) => {
   return {
     id: 'steam',
     endpoints: {
@@ -73,13 +77,20 @@ export const steamAuthServer = (steam: Steam, logger: Logger) => {
               });
 
               if (result) {
+                logger.info('Creating Steam profile...');
+
+                await prisma.steamProfile.upsert({
+                  where: { userId: result.id },
+                  update: { steamId64: steamId },
+                  create: { userId: result.id, steamId64: steamId },
+                });
+
                 return result;
               }
 
               throw new Error('Failed to create user');
             })();
 
-            logger.info(user);
             logger.info('Logging in...');
 
             await ctx.context.internalAdapter.deleteSessions(user.id);

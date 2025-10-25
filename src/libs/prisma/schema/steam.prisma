@@ -1,0 +1,68 @@
+model SteamProfile {
+  id        String   @id @default(cuid())
+  userId    String   @unique
+  steamId64 String   @unique // (unsigned 64-bit) stored as string due to JS/TS safe-integer limits
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  // Relations
+  user                   User                      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  ownedPlaylists         SteamPlaylist[]           @relation("SteamPlaylistOwner")
+  participatingPlaylists SteamPlaylist[]
+  gameRatings            SteamPlaylistGameRating[]
+
+  @@map("steam_profile")
+}
+
+model SteamPlaylist {
+  id             String   @id @default(cuid())
+  name           String
+  ownerProfileId String
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @default(now()) @updatedAt
+
+  // Relations
+  owner        SteamProfile        @relation("SteamPlaylistOwner", fields: [ownerProfileId], references: [id], onDelete: Restrict)
+  participants SteamProfile[]
+  games        SteamPlaylistGame[]
+
+  @@index([ownerProfileId])
+  @@map("steam_playlist")
+}
+
+model SteamPlaylistGame {
+  id         String  @id @default(cuid())
+  playlistId String
+  steamAppId String
+  archived   Boolean @default(false)
+
+  // Relations
+  playlist SteamPlaylist             @relation(fields: [playlistId], references: [id], onDelete: Cascade)
+  ratings  SteamPlaylistGameRating[]
+
+  @@unique([playlistId, steamAppId])
+  @@index([steamAppId])
+  @@map("steam_playlist_game")
+}
+
+enum RatingValue {
+  PENDING
+  YES
+  NO
+  MAYBE
+}
+
+model SteamPlaylistGameRating {
+  id             String      @id @default(cuid())
+  playlistGameId String
+  profileId      String
+  value          RatingValue @default(PENDING)
+
+  // Relations
+  game    SteamPlaylistGame @relation(fields: [playlistGameId], references: [id], onDelete: Cascade)
+  profile SteamProfile      @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+  @@unique([playlistGameId, profileId])
+  @@index([profileId])
+  @@map("steam_playlist_game_rating")
+}
