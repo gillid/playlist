@@ -29,7 +29,7 @@ export const RootLayout = ({
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-dvh flex flex-col`}
       >
         <Header />
-        <main className='flex flex-1 items-center justify-center bg-background text-foreground'>
+        <main className='flex-1 flex flex-col bg-background text-foreground'>
           {children}
         </main>
       </body>

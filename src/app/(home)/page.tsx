@@ -1,5 +1,7 @@
 import { headers } from 'next/headers';
+import { redirect } from 'next/navigation';
 import { authServer } from '@/libs/auth/server';
+import { prisma } from '@/libs/prisma';
 import { DashboardPrivate } from './private/DashboardPrivate';
 import { DashboardPublic } from './public/DashboardPublic';
 
@@ -8,5 +10,17 @@ export default async function Home() {
     headers: await headers(),
   });
 
-  return session ? <DashboardPrivate /> : <DashboardPublic />;
+  if (!session) {
+    return <DashboardPublic />;
+  }
+
+  const steamProfile = await prisma.steamProfile.findUnique({
+    where: { userId: session.user.id },
+  });
+
+  if (steamProfile) {
+    redirect('/steam/dashboard');
+  }
+
+  return <DashboardPrivate />;
 }
