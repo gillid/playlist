@@ -13,18 +13,19 @@ datasource db {
 }
 
 model User {
-  id            String    @id
+  // Data fields
+  id            String   @id
   name          String
   email         String
-  emailVerified Boolean   @default(false)
+  emailVerified Boolean  @default(false)
   image         String?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @default(now()) @updatedAt
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @default(now()) @updatedAt
 
-  // Relations
-  sessions      Session[]
-  accounts      Account[]
-  steamProfile  SteamProfile?
+  // FKs and relations
+  sessions     Session[]
+  accounts     Account[]
+  steamProfile SteamProfile?
 
   @@unique([email])
   @@map("user")

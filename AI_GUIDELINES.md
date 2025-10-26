@@ -229,7 +229,11 @@ We aim to keep the database layer simple and predictable.
   - Generator/datasource and the `User` model are in `src/libs/prisma/schema.prisma`.
   - Domain schemas live in `src/libs/prisma/schema/*.prisma` (e.g., `auth.prisma`, `steam.prisma`).
 - Use explicit relations with clear names. Only introduce separate join models when you need extra data on the relation; otherwise, prefer implicit many-to-many.
-- Organize model fields consistently: list local/scalar fields first (ids, primitives, enums, timestamps, and FK scalar columns like `userId`), then add one empty line, then list all relation fields (single or list relations, including back-relations). Keep indexes/uniques and `@@map` at the bottom of the model. This is a non-functional style rule to keep schemas readable and uniform.
+- Prisma schema formatting convention: two sections per model for clarity:
+  - Data fields: scalar columns and timestamps (`id`, domain data, `createdAt`, `updatedAt`).
+  - FKs and relations: list FK scalar fields (e.g., `userId`, `ownerId`, `playlistId`) and immediately after each FK, place its matching relation field (e.g., `user`, `owner`, `playlist`). Back-relations and relation lists go here too.
+  - Keep indexes, compound uniques, and `@@map` at the bottom of the model.
+  - Reordering fields/comments does not produce a migration; always run `pnpm prisma format` after edits.
 - Enforce authorization and business rules in Server Actions; use database constraints for invariants (uniques, FKs, cascades).
 
 ### Steam IDs (SteamID64)

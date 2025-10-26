@@ -1,11 +1,12 @@
 model SteamProfile {
+  // Data fields
   id        String   @id @default(cuid())
-  userId    String   @unique
   steamId64 String   @unique // (unsigned 64-bit) stored as string due to JS/TS safe-integer limits
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
 
-  // Relations
+  // FKs and relations
+  userId                 String                    @unique
   user                   User                      @relation(fields: [userId], references: [id], onDelete: Cascade)
   ownedPlaylists         SteamPlaylist[]           @relation("SteamPlaylistOwner")
   participatingPlaylists SteamPlaylist[]
@@ -15,30 +16,32 @@ model SteamProfile {
 }
 
 model SteamPlaylist {
-  id             String   @id @default(cuid())
-  name           String
-  ownerProfileId String
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @default(now()) @updatedAt
+  // Data fields
+  id        String   @id @default(cuid())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 
-  // Relations
-  owner        SteamProfile        @relation("SteamPlaylistOwner", fields: [ownerProfileId], references: [id], onDelete: Restrict)
-  participants SteamProfile[]
-  games        SteamPlaylistGame[]
+  // FKs and relations
+  ownerProfileId String
+  owner          SteamProfile        @relation("SteamPlaylistOwner", fields: [ownerProfileId], references: [id], onDelete: Restrict)
+  participants   SteamProfile[]
+  games          SteamPlaylistGame[]
 
   @@index([ownerProfileId])
   @@map("steam_playlist")
 }
 
 model SteamPlaylistGame {
+  // Data fields
   id         String  @id @default(cuid())
-  playlistId String
   steamAppId String
   archived   Boolean @default(false)
 
-  // Relations
-  playlist SteamPlaylist             @relation(fields: [playlistId], references: [id], onDelete: Cascade)
-  ratings  SteamPlaylistGameRating[]
+  // FKs and relations
+  playlistId String
+  playlist   SteamPlaylist             @relation(fields: [playlistId], references: [id], onDelete: Cascade)
+  ratings    SteamPlaylistGameRating[]
 
   @@unique([playlistId, steamAppId])
   @@index([steamAppId])
@@ -53,14 +56,15 @@ enum RatingValue {
 }
 
 model SteamPlaylistGameRating {
-  id             String      @id @default(cuid())
-  playlistGameId String
-  profileId      String
-  value          RatingValue @default(PENDING)
+  // Data fields
+  id    String      @id @default(cuid())
+  value RatingValue @default(PENDING)
 
-  // Relations
-  game    SteamPlaylistGame @relation(fields: [playlistGameId], references: [id], onDelete: Cascade)
-  profile SteamProfile      @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  // FKs and relations
+  playlistGameId String
+  game           SteamPlaylistGame @relation(fields: [playlistGameId], references: [id], onDelete: Cascade)
+  profileId      String
+  profile        SteamProfile      @relation(fields: [profileId], references: [id], onDelete: Cascade)
 
   @@unique([playlistGameId, profileId])
   @@index([profileId])

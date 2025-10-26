@@ -1,4 +1,5 @@
 model Session {
+  // Data fields
   id        String   @id
   expiresAt DateTime
   token     String
@@ -6,20 +7,20 @@ model Session {
   updatedAt DateTime @updatedAt
   ipAddress String?
   userAgent String?
-  userId    String
 
-  // Relations
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  // FKs and relations
+  userId String
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([token])
   @@map("session")
 }
 
 model Account {
+  // Data fields
   id                    String    @id
   accountId             String
   providerId            String
-  userId                String
   accessToken           String?
   refreshToken          String?
   idToken               String?
@@ -30,13 +31,15 @@ model Account {
   createdAt             DateTime  @default(now())
   updatedAt             DateTime  @updatedAt
 
-  // Relations
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  // FKs and relations
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("account")
 }
 
 model Verification {
+  // Data fields
   id         String   @id
   identifier String
   value      String
