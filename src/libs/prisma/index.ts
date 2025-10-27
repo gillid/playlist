@@ -25,3 +25,12 @@ const globalForPrisma = globalThis as unknown as {
 };
 
 export const prisma = globalForPrisma.prisma ?? createPrismaClient();
+
+export type {
+  User,
+  Session,
+  SteamProfile,
+  SteamPlaylist,
+  SteamPlaylistGame,
+  SteamPlaylistGameRating,
+} from '@generated/prisma/client';
