@@ -1,8 +1,8 @@
 import { headers } from 'next/headers';
-import Image from 'next/image';
 import { authServer } from '@/libs/auth/server';
 import { prisma } from '@/libs/prisma';
 import { AppIcon } from '@/ui/AppIcon';
+import { Avatar } from '@/ui/avatar';
 
 const HeaderUser = async () => {
   const session = await authServer.api.getSession({
@@ -19,7 +19,6 @@ const HeaderUser = async () => {
 
   const name = steamProfile?.name ?? session.user.name;
   const avatar = steamProfile?.image ?? session.user.image ?? null;
-  const initial = name.charAt(0).toUpperCase();
 
   return (
     <button
@@ -33,19 +32,7 @@ const HeaderUser = async () => {
       <span className='max-w-[8rem] sm:max-w-[10rem] md:max-w-[14rem] lg:max-w-[16rem] truncate text-sm font-medium text-muted-foreground'>
         {name}
       </span>
-      {avatar ? (
-        <Image
-          src={avatar}
-          alt={name}
-          width={28}
-          height={28}
-          className='h-7 w-7 rounded-full border border-border object-cover group-active:brightness-95'
-        />
-      ) : (
-        <div className='h-7 w-7 rounded-full bg-muted text-muted-foreground flex items-center justify-center text-xs font-medium border border-border group-active:brightness-95'>
-          {initial}
-        </div>
-      )}
+      <Avatar image={avatar} title={name} className='h-7 w-7' />
     </button>
   );
 };
