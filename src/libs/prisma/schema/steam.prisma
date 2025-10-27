@@ -6,11 +6,11 @@ model SteamProfile {
   updatedAt DateTime @default(now()) @updatedAt
 
   // FKs and relations
-  userId                 String                    @unique
-  user                   User                      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  ownedPlaylists         SteamPlaylist[]           @relation("SteamPlaylistOwner")
-  participatingPlaylists SteamPlaylist[]
-  gameRatings            SteamPlaylistGameRating[]
+  userId         String                    @unique
+  user           User                      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  ownedPlaylists SteamPlaylist[]           @relation("SteamPlaylistOwner")
+  playlists      SteamPlaylist[]           @relation("SteamPlaylistToSteamProfile")
+  gameRatings    SteamPlaylistGameRating[]
 
   @@map("steam_profile")
 }
@@ -23,12 +23,12 @@ model SteamPlaylist {
   updatedAt DateTime @default(now()) @updatedAt
 
   // FKs and relations
-  ownerProfileId String
-  owner          SteamProfile        @relation("SteamPlaylistOwner", fields: [ownerProfileId], references: [id], onDelete: Restrict)
-  participants   SteamProfile[]
-  games          SteamPlaylistGame[]
+  ownerId      String
+  owner        SteamProfile        @relation("SteamPlaylistOwner", fields: [ownerId], references: [id])
+  participants SteamProfile[]      @relation("SteamPlaylistToSteamProfile")
+  games        SteamPlaylistGame[]
 
-  @@index([ownerProfileId])
+  @@index([ownerId])
   @@map("steam_playlist")
 }
 
@@ -61,12 +61,12 @@ model SteamPlaylistGameRating {
   value RatingValue @default(PENDING)
 
   // FKs and relations
-  playlistGameId String
-  game           SteamPlaylistGame @relation(fields: [playlistGameId], references: [id], onDelete: Cascade)
-  profileId      String
-  profile        SteamProfile      @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  gameId    String
+  game      SteamPlaylistGame @relation(fields: [gameId], references: [id], onDelete: Cascade)
+  profileId String
+  profile   SteamProfile      @relation(fields: [profileId], references: [id], onDelete: Cascade)
 
-  @@unique([playlistGameId, profileId])
+  @@unique([gameId, profileId])
   @@index([profileId])
   @@map("steam_playlist_game_rating")
 }

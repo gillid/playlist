@@ -11,6 +11,7 @@
     "prepare": "husky",
     "shadcn": "shadcn",
     "db:generate": "dotenv -e .env.development -- prisma generate",
+    "db:diff": "dotenv -e .env.development -- prisma migrate dev --create-only",
     "db:migrate": "dotenv -e .env.development -- prisma migrate dev",
     "db:reset": "dotenv -e .env.development -- prisma migrate reset",
     "db:push": "dotenv -e .env.development -- prisma db push",
