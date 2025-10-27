@@ -4,8 +4,13 @@ export type Prisma = Parameters<typeof prismaAdapter>[0] & {
   steamProfile: {
     upsert: (args: {
       where: { userId: string };
-      update: { steamId64: string };
-      create: { userId: string; steamId64: string };
+      update: Record<string, string>;
+      create: {
+        userId?: string;
+        steamId64: string;
+        name: string;
+        image: string;
+      };
     }) => Promise<unknown>;
   };
 };

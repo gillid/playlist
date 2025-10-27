@@ -16,7 +16,7 @@ export default async function SteamDashboard() {
     where: { userId: session.user.id },
     include: {
       ownedPlaylists: true,
-      participatingPlaylists: {
+      playlists: {
         include: {
           participants: true,
         },

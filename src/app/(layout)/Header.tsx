@@ -1,6 +1,7 @@
 import { headers } from 'next/headers';
 import Image from 'next/image';
 import { authServer } from '@/libs/auth/server';
+import { prisma } from '@/libs/prisma';
 import { AppIcon } from '@/ui/AppIcon';
 
 const HeaderUser = async () => {
@@ -12,9 +13,13 @@ const HeaderUser = async () => {
     return null;
   }
 
-  const name = session.user.name ?? 'Player';
-  const avatar = session.user.image ?? null;
-  const initial = name?.charAt(0).toUpperCase() ?? 'P';
+  const steamProfile = await prisma.steamProfile.findUnique({
+    where: { userId: session.user.id },
+  });
+
+  const name = steamProfile?.name ?? session.user.name;
+  const avatar = steamProfile?.image ?? session.user.image ?? null;
+  const initial = name.charAt(0).toUpperCase();
 
   return (
     <button

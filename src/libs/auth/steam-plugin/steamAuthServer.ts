@@ -70,9 +70,9 @@ export const steamAuthServer = (
               logger.info('User is new. Creating...');
 
               const result = await ctx.context.internalAdapter.createUser({
-                email: userEmail,
                 name: userSummary.personaname,
                 image: userSummary.avatarfull,
+                email: userEmail,
                 emailVerified: true,
               });
 
@@ -81,8 +81,13 @@ export const steamAuthServer = (
 
                 await prisma.steamProfile.upsert({
                   where: { userId: result.id },
-                  update: { steamId64: steamId },
-                  create: { userId: result.id, steamId64: steamId },
+                  update: {},
+                  create: {
+                    userId: result.id,
+                    steamId64: steamId,
+                    name: userSummary.personaname,
+                    image: userSummary.avatarfull,
+                  },
                 });
 
                 return result;

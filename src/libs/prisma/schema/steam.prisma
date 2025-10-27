@@ -2,12 +2,14 @@ model SteamProfile {
   // Data fields
   id        String   @id @default(cuid())
   steamId64 String   @unique // (unsigned 64-bit) stored as string due to JS/TS safe-integer limits
+  name      String
+  image     String
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
 
   // FKs and relations
-  userId         String                    @unique
-  user           User                      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId         String?                   @unique
+  user           User?                     @relation(fields: [userId], references: [id], onDelete: SetNull)
   ownedPlaylists SteamPlaylist[]           @relation("SteamPlaylistOwner")
   playlists      SteamPlaylist[]           @relation("SteamPlaylistToSteamProfile")
   gameRatings    SteamPlaylistGameRating[]
