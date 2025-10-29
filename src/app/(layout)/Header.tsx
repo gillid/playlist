@@ -40,9 +40,9 @@ const HeaderUser = async () => {
 export const Header = async () => {
   return (
     <header className='border-b border-border bg-card'>
-      <div className='container mx-auto pl-4 pr-0 h-12'>
+      <div className='gutter max-sm:px-0 h-12'>
         <div className='h-full flex items-center justify-between gap-2 sm:gap-4'>
-          <div className='flex items-center gap-3'>
+          <div className='flex items-center gap-3 pl-4 sm:pl-0 select-none'>
             <AppIcon light={true} />
             <h1 className='text-xl font-semibold'>Playlist</h1>
           </div>

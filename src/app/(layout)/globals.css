@@ -114,6 +114,11 @@
   --sidebar-ring: oklch(0.551 0.027 264.364);
 }
 
+@theme {
+  --breakpoint-xl: initial;
+  --breakpoint-2xl: initial;
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -126,5 +131,11 @@
   button:not(:disabled),
   [role='button']:not(:disabled) {
     cursor: pointer;
+  }
+}
+
+@layer components {
+  .gutter {
+    @apply container mx-auto px-4;
   }
 }
