@@ -1,3 +1,4 @@
+import 'server-only';
 import { PrismaClient } from '@generated/prisma/client';
 import type { LogLevel } from '@generated/prisma/internal/prismaNamespace';
 import { withAccelerate } from '@prisma/extension-accelerate';
@@ -27,6 +28,7 @@ const globalForPrisma = globalThis as unknown as {
 export const prisma = globalForPrisma.prisma ?? createPrismaClient();
 
 export type {
+  Prisma,
   User,
   Session,
   SteamProfile,
