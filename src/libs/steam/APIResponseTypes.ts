@@ -16,3 +16,38 @@ export type GetPlayerSummaries = {
     }[];
   };
 };
+
+export type GetGameDetails = {
+  [appid: string]: {
+    success: boolean;
+    data: {
+      name: string;
+      categories: { id: number; description: string }[];
+      genres: { id: number; description: string }[];
+      is_free: boolean;
+      price_overview: {
+        currency: string;
+        initial: number; // cents
+        discount_percent: number;
+        final: number; // cents
+        final_formatted: string;
+      };
+      recommendations: {
+        total: number;
+      };
+      release_date: {
+        coming_soon: boolean;
+        date: string;
+      };
+      short_description: string;
+      steam_appid: number;
+
+      // images
+      background: string;
+      background_raw: string;
+      header_image: string;
+      capsule_image: string;
+      capsule_imagev5: string;
+    };
+  };
+};

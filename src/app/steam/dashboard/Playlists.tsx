@@ -38,9 +38,11 @@ export const Playlists: React.FC = async () => {
                     <PlaylistParticipants participants={participants} />
                   </div>
 
-                  <div className='mt-3 flex items-center gap-3'>
-                    <PlaylistGames games={games} />
-                  </div>
+                  {games.length > 0 && (
+                    <div className='mt-3 flex items-center gap-3'>
+                      <PlaylistGames games={games} />
+                    </div>
+                  )}
                 </CardContent>
               </Card>
             </Link>

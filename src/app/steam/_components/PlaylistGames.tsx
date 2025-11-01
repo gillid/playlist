@@ -1,7 +1,7 @@
 import React from 'react';
 import type { SteamPlaylistGame } from '@/libs/prisma';
 import { Avatar } from '@/ui/avatar';
-// import { Game } from './Game';
+import { Game } from './Game';
 
 const GAMES_TO_SHOW = 6;
 
@@ -12,11 +12,9 @@ export const PlaylistGames: React.FC<{ games: SteamPlaylistGame[] }> = ({
 
   return (
     <div className='flex -space-x-2' aria-label={`${games.length} games`}>
-      {games
-        .slice(0, GAMES_TO_SHOW)
-        .map(
-          (game) => '' /*<Game key={game.id} steamAppId={game.steamAppId} />*/
-        )}
+      {games.slice(0, GAMES_TO_SHOW).map((game) => (
+        <Game key={game.id} steamAppId={game.steamAppId} />
+      ))}
 
       {extraGames > 0 && (
         <Avatar

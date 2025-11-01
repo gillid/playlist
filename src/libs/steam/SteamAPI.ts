@@ -1,4 +1,4 @@
-import type { GetPlayerSummaries } from './APIResponseTypes';
+import type { GetGameDetails, GetPlayerSummaries } from './APIResponseTypes';
 
 export class SteamAPI {
   private readonly apiKey: string;
@@ -19,7 +19,7 @@ export class SteamAPI {
   }
 
   private getStoreUrl(path: string, params: Record<string, string>): string {
-    const url = new URL('https://store.steampowered.com/api');
+    const url = new URL('https://store.steampowered.com');
     url.pathname = path;
     url.search = new URLSearchParams(params).toString();
 
@@ -38,5 +38,23 @@ export class SteamAPI {
     const data: GetPlayerSummaries = await response.json();
 
     return data.response.players;
+  }
+
+  public async getGameDetails(appid: string) {
+    const url = this.getStoreUrl('/api/appdetails', {
+      appids: appid,
+    });
+
+    const response = await fetch(url);
+    const data: GetGameDetails = await response.json();
+
+    if (data && data[appid] && data[appid].success) {
+      return {
+        name: data[appid].data.name,
+        image: data[appid].data.capsule_imagev5,
+      };
+    }
+
+    return undefined;
   }
 }
