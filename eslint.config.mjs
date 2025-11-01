@@ -62,7 +62,7 @@ const eslintConfig = [
 
   {
     files: [
-      'src/libs/_assembly/*',
+      'src/libs/_assembly/**',
     ],
     rules: {
       'no-restricted-imports': [

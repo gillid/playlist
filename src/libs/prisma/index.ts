@@ -1,4 +1,3 @@
-import 'server-only';
 import { PrismaClient } from '@generated/prisma/client';
 import type { LogLevel } from '@generated/prisma/internal/prismaNamespace';
 import { withAccelerate } from '@prisma/extension-accelerate';
