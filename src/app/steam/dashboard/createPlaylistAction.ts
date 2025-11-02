@@ -1,12 +1,12 @@
 'use server';
 
-import { revalidatePath } from 'next/cache';
+import { refresh } from 'next/cache';
 import { z } from 'zod';
 import { prisma } from '@/libs/prisma';
 import { getSteamProfile } from '../_actions/getSteamProfile';
 
 const FormDataSchema = z.object({
-  playlist_name: z.coerce.string().trim().min(10).max(100),
+  playlist_name: z.coerce.string().trim().min(3).max(100),
 });
 
 export type CreatePlaylistActionResponse = {
@@ -38,7 +38,7 @@ export async function createPlaylistAction(
       },
     });
 
-    revalidatePath('/steam/dashboard');
+    refresh();
 
     return {
       status: 'success',
