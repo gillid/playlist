@@ -2,6 +2,7 @@ import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
   serverExternalPackages: ['pino'],
+  reactCompiler: true,
   images: {
     remotePatterns: [
       {
