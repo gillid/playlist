@@ -34,4 +34,5 @@ export type {
   SteamPlaylist,
   SteamPlaylistGame,
   SteamPlaylistGameRating,
+  RatingValue,
 } from '@generated/prisma/client';

@@ -10,6 +10,11 @@ const nextConfig: NextConfig = {
         hostname: 'avatars.steamstatic.com',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'shared.akamai.steamstatic.com',
+        pathname: '/**',
+      },
     ],
   },
 };
