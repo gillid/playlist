@@ -9,50 +9,34 @@ const FormDataSchema = z.object({
   playlist_name: z.coerce.string().trim().min(3).max(100),
 });
 
-export type CreatePlaylistActionResponse = {
-  status: 'success' | 'error' | 'idle';
-  message: string;
-};
-
 export async function createPlaylist(
-  _prevState: CreatePlaylistActionResponse,
-  formData: FormData
-): Promise<CreatePlaylistActionResponse> {
+  key: 'createPlaylist',
+  { arg }: { arg: FormData }
+): Promise<{ message: string }> {
   const profile = await getSteamProfile();
 
-  try {
-    const parsedFormData = FormDataSchema.parse(
-      Object.fromEntries(formData.entries())
-    );
+  const parseResult = FormDataSchema.safeParse(
+    Object.fromEntries(arg.entries())
+  );
 
-    await prisma.steamPlaylist.create({
-      data: {
-        name: parsedFormData.playlist_name,
-        owner: { connect: { id: profile.id } },
-      },
-    });
+  if (parseResult.error) {
+    const errorMessage = parseResult.error.issues
+      .map((issue) => `${issue.path[0].toString()}: ${issue.message}`)
+      .join(', ');
 
-    refresh();
-
-    return {
-      status: 'success',
-      message: 'Playlist created successfully',
-    };
-  } catch (error) {
-    if (error instanceof z.ZodError) {
-      const errorMessage = error.issues
-        .map((issue) => `${issue.path[0].toString()}: ${issue.message}`)
-        .join(', ');
-
-      return {
-        status: 'error',
-        message: errorMessage,
-      };
-    }
-
-    return {
-      status: 'error',
-      message: (error as Error)?.message,
-    };
+    return Promise.reject(new Error(errorMessage));
   }
+
+  await prisma.steamPlaylist.create({
+    data: {
+      name: parseResult.data.playlist_name,
+      owner: { connect: { id: profile.id } },
+    },
+  });
+
+  refresh();
+
+  return {
+    message: 'Playlist created successfully',
+  };
 }
