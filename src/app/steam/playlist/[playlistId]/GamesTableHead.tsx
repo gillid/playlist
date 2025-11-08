@@ -1,10 +1,10 @@
 import React from 'react';
 import { Avatar } from '@/ui/avatar';
-import type { RatingsMatrix } from './getPlaylistRatingsMatrix';
+import { getPlaylistRatingsMatrix } from './getPlaylistRatingsMatrix';
 
-export const GamesTableHead: React.FC<{ ratingsMatrix: RatingsMatrix }> = ({
-  ratingsMatrix,
-}) => {
+export const GamesTableHead: React.FC = async () => {
+  const ratingsMatrix = await getPlaylistRatingsMatrix();
+
   return (
     <thead className='sticky top-0 z-10 bg-background'>
       <tr>

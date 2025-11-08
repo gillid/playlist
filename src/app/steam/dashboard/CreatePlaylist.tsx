@@ -6,13 +6,13 @@ import { Input } from '@/ui/input';
 import { InlineNotification } from '@/ui/InlineNotification';
 import { useResettableFormState } from '@/libs/form-state/useResettableFormState';
 import {
-  createPlaylistAction,
+  createPlaylist,
   type CreatePlaylistActionResponse,
-} from './createPlaylistAction';
+} from './_actions/createPlaylist';
 
 export const CreatePlaylist = () => {
   const [state, action, isPending, reset] =
-    useResettableFormState<CreatePlaylistActionResponse>(createPlaylistAction, {
+    useResettableFormState<CreatePlaylistActionResponse>(createPlaylist, {
       status: 'idle',
       message: '',
     });

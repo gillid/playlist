@@ -2,13 +2,10 @@
 
 import { refresh } from 'next/cache';
 import { prisma, type RatingValue } from '@/libs/prisma';
-import { getSteamProfile } from '../../_actions/getSteamProfile';
+import { getSteamProfile } from '../../../_functions/getSteamProfile';
 
 export const rateGame = async (gameId: string, rating: RatingValue) => {
   const steamProfile = await getSteamProfile();
-  if (!steamProfile) {
-    return;
-  }
 
   await prisma.steamPlaylistGameRating.upsert({
     where: {

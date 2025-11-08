@@ -3,7 +3,7 @@
 import React from 'react';
 import type { RatingValue } from '@/libs/prisma';
 import { RatingIcon } from './RatingIcon';
-import { rateGame } from './rateGame';
+import { rateGame } from './_actions/rateGame';
 
 export const RatingSelector: React.FC<{
   value: RatingValue;

@@ -13,9 +13,8 @@ const base =
 export const RatingIcon: React.FC<{
   value: RatingValue;
   active?: boolean;
-  size?: number;
-}> = ({ value, active = true, size = 4 }) => {
-  const sizeClass = `w-${size} h-${size}`;
+}> = ({ value, active = true }) => {
+  const sizeClass = `w-5 h-5`;
 
   switch (value) {
     case 'YES':
