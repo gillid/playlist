@@ -21,7 +21,7 @@ export const AddGameModalSearchResultsItem: React.FC<{
         image={game.image}
         width={231}
         height={87}
-        className='h-[24px] md:h-[48px]'
+        className='aspect-[231/87] h-[24px] md:h-[48px]'
       />
 
       <div className='flex-1 min-w-10 font-medium truncate'>{game.name}</div>

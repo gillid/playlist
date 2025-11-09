@@ -22,7 +22,7 @@ export const GamesTableBody: React.FC<{ ratingsMatrix: RatingsMatrix }> = ({
                 image={game.image}
                 width={184}
                 height={69}
-                className='h-[35px] md:h-[46px] lg:h-[69px]'
+                className='aspect-[184/69] h-[35px] md:h-[46px] lg:h-[69px]'
               />
             </td>
 

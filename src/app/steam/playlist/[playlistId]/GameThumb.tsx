@@ -33,8 +33,6 @@ export const GameThumb: React.FC<{
   height: number;
   className?: string;
 }> = ({ steamAppId, name, image, width, height, className }) => {
-  className = cn(`aspect-[${width}/${height}]`, className);
-
   if (!image) {
     return <ImageBox name={name} appId={steamAppId} className={className} />;
   }
