@@ -3,7 +3,7 @@ import type { prismaAdapter } from 'better-auth/adapters/prisma';
 export type Prisma = Parameters<typeof prismaAdapter>[0] & {
   steamProfile: {
     upsert: (args: {
-      where: { userId: string };
+      where: { steamId64: string };
       update: Record<string, string>;
       create: {
         userId?: string;

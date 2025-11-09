@@ -88,8 +88,12 @@ export const steamAuthServer = (
             logger.info('Upserting Steam profile...');
 
             await prisma.steamProfile.upsert({
-              where: { userId: user.id },
-              update: {},
+              where: { steamId64: steamId },
+              update: {
+                userId: user.id,
+                name: userSummary.personaname,
+                image: userSummary.avatarfull,
+              },
               create: {
                 userId: user.id,
                 steamId64: steamId,
