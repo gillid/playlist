@@ -61,3 +61,25 @@ export type GetFriendList = {
     }[];
   };
 };
+
+export type StoreSearch = {
+  total: number;
+  items: {
+    id: number; // appid
+    name: string;
+    type: string; // 'app'
+    tiny_image: string;
+    price: {
+      currency: string; // eg. USD
+      initial: number; // cents
+      final: number; // cents
+    };
+    metascore: string;
+    streamingvideo: boolean;
+    platforms: {
+      windows: boolean;
+      mac: boolean;
+      linux: boolean;
+    };
+  }[];
+};

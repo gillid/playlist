@@ -1,6 +1,6 @@
 import React from 'react';
 import { Avatar } from '@/ui/avatar';
-import { getPlaylistRatingsMatrix } from './getPlaylistRatingsMatrix';
+import { getPlaylistRatingsMatrix } from './_functions/getPlaylistRatingsMatrix';
 
 export const GamesTableHead: React.FC = async () => {
   const ratingsMatrix = await getPlaylistRatingsMatrix();

@@ -2,6 +2,7 @@ import type {
   GetGameDetails,
   GetPlayerSummaries,
   GetFriendList,
+  StoreSearch,
 } from './APIResponseTypes';
 
 export class SteamAPI {
@@ -75,5 +76,21 @@ export class SteamAPI {
     }
 
     return undefined;
+  }
+
+  /**
+   * Search Steam Store by game name
+   * API: https://store.steampowered.com/api/storesearch/
+   */
+  public async storeSearch(term: string, cc: string = 'US') {
+    const url = this.getStoreUrl('/api/storesearch/', {
+      term,
+      cc,
+    });
+
+    const response = await fetch(url);
+    const data: StoreSearch = await response.json();
+
+    return data;
   }
 }

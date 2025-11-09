@@ -1,9 +1,10 @@
 import React from 'react';
 import { AddFriend } from './_components/add-friend/AddFriend';
+import { AddGame } from './_components/add-game/AddGame';
+import { getPlaylistRatingsMatrix } from './_functions/getPlaylistRatingsMatrix';
 import { PlaylistProvider } from './_providers/PlaylistProvider';
 import { GamesTableBody } from './GamesTableBody';
 import { GamesTableHead } from './GamesTableHead';
-import { getPlaylistRatingsMatrix } from './getPlaylistRatingsMatrix';
 
 export const Playlist: React.FC = async () => {
   const ratingsMatrix = await getPlaylistRatingsMatrix();
@@ -12,6 +13,7 @@ export const Playlist: React.FC = async () => {
   return (
     <div className='space-y-4'>
       <div className='flex gap-4'>
+        <AddGame playlist={playlist} />
         <AddFriend playlist={playlist} />
       </div>
 

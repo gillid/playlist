@@ -2,8 +2,8 @@
 
 import React from 'react';
 import { motion } from 'motion/react';
+import type { RatingsMatrix } from './_functions/getPlaylistRatingsMatrix';
 import { GameThumb } from './GameThumb';
-import type { RatingsMatrix } from './getPlaylistRatingsMatrix';
 import { RatingIcon } from './RatingIcon';
 import { RatingSelector } from './RatingSelector';
 
@@ -20,6 +20,9 @@ export const GamesTableBody: React.FC<{ ratingsMatrix: RatingsMatrix }> = ({
                 steamAppId={game.steamAppId}
                 name={game.name}
                 image={game.image}
+                width={184}
+                height={69}
+                className='h-[35px] md:h-[46px] lg:h-[69px]'
               />
             </td>
 

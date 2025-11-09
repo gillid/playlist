@@ -1,14 +1,22 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { cn } from '@/ui/utils';
 
 const ImageBox: React.FC<
-  React.PropsWithChildren<{ name: string; appId: string }>
-> = ({ children, appId, name }) => (
+  React.PropsWithChildren<{
+    name: string;
+    appId: string;
+    className?: string;
+  }>
+> = ({ children, appId, name, className }) => (
   <Link
     href={`https://store.steampowered.com/app/${appId}`}
     target='_blank'
-    className='relative h-[35px] md:h-[46px] lg:h-[69px] w-[92px] md:w-[123px] lg:w-[184px] rounded-xs overflow-hidden ring-1 ring-border bg-muted flex items-center justify-center hover:ring-ring transition-colors'
+    className={cn(
+      'relative rounded-xs overflow-hidden ring-1 ring-border bg-muted flex items-center justify-center hover:ring-ring transition-colors',
+      className
+    )}
   >
     <span className='absolute z-0 content-center text-center h-full w-full text-xs text-muted-foreground'>
       {name}
@@ -21,19 +29,24 @@ export const GameThumb: React.FC<{
   steamAppId: string;
   name: string;
   image?: string;
-}> = ({ steamAppId, name, image }) => {
+  width: number;
+  height: number;
+  className?: string;
+}> = ({ steamAppId, name, image, width, height, className }) => {
+  className = cn(`aspect-[${width}/${height}]`, className);
+
   if (!image) {
-    return <ImageBox name={name} appId={steamAppId} />;
+    return <ImageBox name={name} appId={steamAppId} className={className} />;
   }
 
   return (
-    <ImageBox name={name} appId={steamAppId}>
+    <ImageBox name={name} appId={steamAppId} className={className}>
       <Image
         src={image}
-        width={184}
-        height={69}
         alt={name}
         title={name}
+        width={width}
+        height={height}
         className={`z-10 object-cover`}
       />
     </ImageBox>
