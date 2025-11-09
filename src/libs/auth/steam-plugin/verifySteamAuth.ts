@@ -18,6 +18,7 @@ export const verifySteamAuth = async (
   logger.info(`Steam verify response: ${verifyText}`);
 
   if (!verifyText.includes('is_valid:true')) {
+    logger.error('Failed to verify Steam OpenID response');
     throw new Error('Failed to verify Steam OpenID response');
   }
 };

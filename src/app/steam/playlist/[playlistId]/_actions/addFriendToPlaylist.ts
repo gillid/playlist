@@ -27,25 +27,34 @@ export async function addFriendToPlaylist(
     throw new Error('Playlist not found or access denied');
   }
 
-  const playerSummaries = await steam.getPlayerSummaries(steamId64);
-  if (playerSummaries.length === 0) {
-    throw new Error('User not found on Steam');
-  }
+  const profile = await (async function () {
+    const existingProfile = await prisma.steamProfile.findUnique({
+      where: { steamId64 },
+    });
+    if (existingProfile) {
+      return existingProfile;
+    }
 
-  const player = playerSummaries[0];
+    const playerSummaries = await steam.getPlayerSummaries(steamId64);
+    if (playerSummaries.length === 0) {
+      throw new Error('User not found on Steam');
+    }
 
-  const profile = await prisma.steamProfile.upsert({
-    where: { steamId64: player.steamid },
-    update: {
-      name: player.personaname,
-      image: player.avatarfull,
-    },
-    create: {
-      steamId64: player.steamid,
-      name: player.personaname,
-      image: player.avatarfull,
-    },
-  });
+    const player = playerSummaries[0];
+
+    return prisma.steamProfile.upsert({
+      where: { steamId64: player.steamid },
+      update: {
+        name: player.personaname,
+        image: player.avatarfull,
+      },
+      create: {
+        steamId64: player.steamid,
+        name: player.personaname,
+        image: player.avatarfull,
+      },
+    });
+  })();
 
   await prisma.steamPlaylist.update({
     where: { id: playlistId },

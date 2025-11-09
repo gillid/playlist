@@ -30,28 +30,30 @@ export const steamAuthServer = (
             }
 
             const requestUrl = new URL(ctx.request.url);
+            logger.info(`Request url: ${ctx.request.url}`);
 
             const claimedId = requestUrl.searchParams.get('openid.claimed_id');
             if (!claimedId) {
+              logger.error('openid.claimed_id is not provided');
               throw new Error('openid.claimed_id is not provided');
             }
-            logger.info(`got claimedId: ${claimedId}`);
 
             const steamId = extractSteamId(claimedId);
             if (!steamId) {
+              logger.error('Failed to extract Steam ID from claimed_id');
               throw new Error('Failed to extract Steam ID from claimed_id');
             }
-            logger.info(`got steamId: ${steamId}`);
 
             await verifySteamAuth(requestUrl.searchParams, logger);
-            logger.info('Steam authentication verified');
 
             const playersSummaries = await steam.getPlayerSummaries(steamId);
             const userSummary = playersSummaries[0];
             if (!userSummary) {
+              logger.error('Failed to fetch user summary');
               throw new Error('Failed to fetch user summary');
             }
-            logger.info('Steam user summary fetched:');
+
+            logger.info('Steam user summary:');
             logger.info(userSummary);
 
             const userEmail = `${steamId}@steam.artificial`;
@@ -61,44 +63,46 @@ export const steamAuthServer = (
                 const result =
                   await ctx.context.internalAdapter.findUserByEmail(userEmail);
 
-                if (result?.user) {
-                  logger.info('User is found.');
+                if (result) {
+                  logger.info('Found existing user');
                   return result.user;
                 }
               }
 
-              logger.info('User is new. Creating...');
-
-              const result = await ctx.context.internalAdapter.createUser({
+              const user = await ctx.context.internalAdapter.createUser({
                 name: userSummary.personaname,
                 image: userSummary.avatarfull,
                 email: userEmail,
                 emailVerified: true,
               });
 
-              if (result) {
-                logger.info('Creating Steam profile...');
+              logger.info('Created new user');
 
-                await prisma.steamProfile.upsert({
-                  where: { userId: result.id },
-                  update: {},
-                  create: {
-                    userId: result.id,
-                    steamId64: steamId,
-                    name: userSummary.personaname,
-                    image: userSummary.avatarfull,
-                  },
-                });
-
-                return result;
+              if (user) {
+                return user;
               }
 
               throw new Error('Failed to create user');
             })();
 
-            logger.info('Logging in...');
+            logger.info('Upserting Steam profile...');
 
-            await ctx.context.internalAdapter.deleteSessions(user.id);
+            await prisma.steamProfile.upsert({
+              where: { userId: user.id },
+              update: {},
+              create: {
+                userId: user.id,
+                steamId64: steamId,
+                name: userSummary.personaname,
+                image: userSummary.avatarfull,
+              },
+            });
+
+            if (ctx.context.session) {
+              logger.info(`Found an existing session. Redirecting...`);
+              return ctx.redirect('/');
+            }
+
             const session = await ctx.context.internalAdapter.createSession(
               user.id,
               ctx
@@ -106,9 +110,9 @@ export const steamAuthServer = (
 
             await setSessionCookie(ctx, { session, user });
 
-            logger.info('Session created and cookie set.');
+            logger.info(`Session created and cookie set. Redirecting...`);
 
-            return ctx.redirect('/');
+            return ctx.redirect('/api/auth-success');
           } catch (e) {
             const error = e as Error;
             logger.error(error.message);
