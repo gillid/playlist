@@ -51,3 +51,13 @@ export type GetGameDetails = {
     };
   };
 };
+
+export type GetFriendList = {
+  friendslist: {
+    friends: {
+      steamid: string;
+      relationship: string; // "friend"
+      friend_since: number; // Unix timestamp
+    }[];
+  };
+};

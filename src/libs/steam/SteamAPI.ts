@@ -1,4 +1,8 @@
-import type { GetGameDetails, GetPlayerSummaries } from './APIResponseTypes';
+import type {
+  GetGameDetails,
+  GetPlayerSummaries,
+  GetFriendList,
+} from './APIResponseTypes';
 
 export class SteamAPI {
   private readonly apiKey: string;
@@ -27,7 +31,7 @@ export class SteamAPI {
   }
 
   /**
-   * API docs - https://partner.steamgames.com/doc/webapi/ISteamUser
+   * API docs - https://partner.steamgames.com/doc/webapi/ISteamUser#GetPlayerSummaries
    */
   public async getPlayerSummaries(steamids: string) {
     const url = this.getApiUrl('ISteamUser/GetPlayerSummaries/v2/', {
@@ -38,6 +42,21 @@ export class SteamAPI {
     const data: GetPlayerSummaries = await response.json();
 
     return data.response.players;
+  }
+
+  /**
+   * API docs - https://partner.steamgames.com/doc/webapi/ISteamUser#GetFriendList
+   */
+  public async getFriendList(steamid: string) {
+    const url = this.getApiUrl('ISteamUser/GetFriendList/v0001/', {
+      steamid,
+      relationship: 'friend',
+    });
+
+    const response = await fetch(url);
+    const data: GetFriendList = await response.json();
+
+    return data.friendslist.friends;
   }
 
   public async getGameDetails(appid: string) {
