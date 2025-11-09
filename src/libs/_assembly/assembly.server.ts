@@ -1,8 +1,8 @@
 import 'server-only';
 import pino from 'pino';
 import { createAuthServer } from '@/libs-origin/auth/server';
-import { getServerEnv } from '@/libs-origin/env/server';
 import { getClientEnv } from '@/libs-origin/env/client';
+import { getServerEnv } from '@/libs-origin/env/server';
 import { prisma } from '@/libs-origin/prisma';
 import { SteamAPI } from '@/libs-origin/steam/SteamAPI';
 

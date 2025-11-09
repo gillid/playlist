@@ -1,6 +1,6 @@
 import React from 'react';
-import { cn } from '@/ui/utils';
 import { Dialog, DialogContent } from '@/ui/dialog';
+import { cn } from '@/ui/utils';
 
 export const ModalWrapper: React.FC<
   React.PropsWithChildren<{

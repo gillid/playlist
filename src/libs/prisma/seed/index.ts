@@ -1,5 +1,5 @@
-import { prisma } from '../index';
 import { faker } from '@faker-js/faker';
+import { prisma } from '../index';
 
 const main = async () => {
   const mainUserProfile = await prisma.steamProfile.findFirst({

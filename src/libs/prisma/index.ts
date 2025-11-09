@@ -1,6 +1,8 @@
-import { PrismaClient } from '@generated/prisma/client';
-import type { LogLevel } from '@generated/prisma/internal/prismaNamespace';
 import { withAccelerate } from '@prisma/extension-accelerate';
+// eslint-disable-next-line no-restricted-imports
+import { PrismaClient } from '@generated/prisma/client';
+// eslint-disable-next-line no-restricted-imports
+import type { LogLevel } from '@generated/prisma/internal/prismaNamespace';
 
 const createPrismaClient = () => {
   const logLevel: LogLevel[] =
@@ -26,6 +28,7 @@ const globalForPrisma = globalThis as unknown as {
 
 export const prisma = globalForPrisma.prisma ?? createPrismaClient();
 
+// eslint-disable-next-line no-restricted-imports
 export type {
   Prisma,
   User,

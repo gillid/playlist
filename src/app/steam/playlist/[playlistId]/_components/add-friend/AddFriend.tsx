@@ -3,9 +3,9 @@
 import React, { useState } from 'react';
 import { UserPlusIcon } from 'lucide-react';
 import { Button } from '@/ui/button';
+import type { PlaylistWithRelations } from '../../_functions/getPlaylistById';
 import { ModalWrapper } from '../ModalWrapper';
 import { AddFriendModal } from './AddFriendModal';
-import type { PlaylistWithRelations } from '../../_functions/getPlaylistById';
 
 export const AddFriend: React.FC<{
   playlist: PlaylistWithRelations;

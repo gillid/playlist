@@ -1,10 +1,10 @@
 import 'server-only';
-import { createAuthEndpoint } from 'better-auth/api';
 import type { BetterAuthPlugin } from 'better-auth';
+import { createAuthEndpoint } from 'better-auth/api';
 import { setSessionCookie } from 'better-auth/cookies';
 import { extractSteamId } from './extractSteamId';
-import { verifySteamAuth } from './verifySteamAuth';
 import type { Prisma, Steam, Logger } from './types';
+import { verifySteamAuth } from './verifySteamAuth';
 
 /**
  * Steam authentication plugin for better-authServer

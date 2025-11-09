@@ -3,8 +3,8 @@
 import React, { useRef } from 'react';
 import useSWRMutation from 'swr/mutation';
 import { Button } from '@/ui/button';
-import { Input } from '@/ui/input';
 import { InlineNotification } from '@/ui/InlineNotification';
+import { Input } from '@/ui/input';
 import { createPlaylist } from './_actions/createPlaylist';
 
 export const CreatePlaylist = () => {

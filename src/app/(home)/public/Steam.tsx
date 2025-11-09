@@ -1,8 +1,8 @@
 'use client';
 
 import { useTransition } from 'react';
-import { authClient } from '@/libs/auth/client';
 import Image from 'next/image';
+import { authClient } from '@/libs/auth/client';
 
 export const Steam = () => {
   const [isPending, startTransition] = useTransition();

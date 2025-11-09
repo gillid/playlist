@@ -4,8 +4,8 @@ import React, { useRef } from 'react';
 import useSWRMutation from 'swr/mutation';
 import type { RatingValue } from '@/libs/prisma';
 import { cn } from '@/ui/utils';
-import { RatingIcon } from './RatingIcon';
 import { rateGame } from './_actions/rateGame';
+import { RatingIcon } from './RatingIcon';
 
 export const RatingSelector: React.FC<{
   value: RatingValue;

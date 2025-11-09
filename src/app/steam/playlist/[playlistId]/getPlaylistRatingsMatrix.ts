@@ -1,10 +1,10 @@
 import { cache } from 'react';
+import { logger } from '@/libs/logger';
 import type { RatingValue, SteamPlaylistGame } from '@/libs/prisma';
 import { steam } from '@/libs/steam';
-import { logger } from '@/libs/logger';
+import { getSteamProfile } from '../../_functions/getSteamProfile';
 import type { PlaylistWithRelations } from './_functions/getPlaylistById';
 import { PlaylistProvider } from './_providers/PlaylistProvider';
-import { getSteamProfile } from '../../_functions/getSteamProfile';
 
 type Participant = PlaylistWithRelations['participants'][number];
 type Game = PlaylistWithRelations['games'][number];

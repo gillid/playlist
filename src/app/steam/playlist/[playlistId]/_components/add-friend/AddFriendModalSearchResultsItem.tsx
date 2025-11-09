@@ -2,9 +2,9 @@ import React from 'react';
 import { BellIcon, CheckIcon } from 'lucide-react';
 import { Avatar } from '@/ui/avatar';
 import { Button } from '@/ui/button';
-import { AddFriendModalSearchResultAdd } from './AddFriendModalSearchResultAdd';
 import type { Friend } from '../../_actions/getFriendsList';
 import type { PlaylistWithRelations } from '../../_functions/getPlaylistById';
+import { AddFriendModalSearchResultAdd } from './AddFriendModalSearchResultAdd';
 
 export const AddFriendModalSearchResultsItem: React.FC<{
   playlist: PlaylistWithRelations;

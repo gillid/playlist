@@ -1,9 +1,9 @@
 import React from 'react';
 import Link from 'next/link';
 import { Card, CardContent } from '@/ui/card';
-import { getPlaylists } from '../_functions/getPlaylists';
-import { PlaylistParticipants } from '../_components/PlaylistParticipants';
 import { PlaylistGames } from '../_components/PlaylistGames';
+import { PlaylistParticipants } from '../_components/PlaylistParticipants';
+import { getPlaylists } from '../_functions/getPlaylists';
 
 export const Playlists: React.FC = async () => {
   const playlists = await getPlaylists();

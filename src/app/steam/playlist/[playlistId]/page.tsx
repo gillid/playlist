@@ -1,9 +1,9 @@
-import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import { getPlaylistById } from './_functions/getPlaylistById';
-import { Playlist } from './Playlist';
-import { PlaylistProvider } from './_providers/PlaylistProvider';
+import { notFound } from 'next/navigation';
 import { getSteamProfile } from '../../_functions/getSteamProfile';
+import { getPlaylistById } from './_functions/getPlaylistById';
+import { PlaylistProvider } from './_providers/PlaylistProvider';
+import { Playlist } from './Playlist';
 
 export default async function SteamPlaylist({
   params,

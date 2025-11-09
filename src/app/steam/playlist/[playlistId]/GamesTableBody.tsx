@@ -3,9 +3,9 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import { GameThumb } from './GameThumb';
-import { RatingSelector } from './RatingSelector';
-import { RatingIcon } from './RatingIcon';
 import type { RatingsMatrix } from './getPlaylistRatingsMatrix';
+import { RatingIcon } from './RatingIcon';
+import { RatingSelector } from './RatingSelector';
 
 export const GamesTableBody: React.FC<{ ratingsMatrix: RatingsMatrix }> = ({
   ratingsMatrix,

@@ -1,5 +1,5 @@
-import Link from 'next/link';
 import { FrownIcon } from 'lucide-react';
+import Link from 'next/link';
 
 export const NotFound = async () => (
   <div className='flex-1 gutter py-8 grid place-items-center'>

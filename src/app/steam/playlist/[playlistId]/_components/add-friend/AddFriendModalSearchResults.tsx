@@ -1,9 +1,9 @@
 import React from 'react';
 import { Loader2Icon } from 'lucide-react';
 import { InlineNotification } from '@/ui/InlineNotification';
+import type { PlaylistWithRelations } from '../../_functions/getPlaylistById';
 import { AddFriendModalSearchResultsItem } from './AddFriendModalSearchResultsItem';
 import { useFriendsList } from './useFriendsList';
-import type { PlaylistWithRelations } from '../../_functions/getPlaylistById';
 
 export const AddFriendModalSearchResults: React.FC<{
   playlist: PlaylistWithRelations;
