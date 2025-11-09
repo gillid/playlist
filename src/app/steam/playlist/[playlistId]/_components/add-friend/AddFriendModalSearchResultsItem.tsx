@@ -15,7 +15,7 @@ export const AddFriendModalSearchResultsItem: React.FC<{
   const [showShare, setShowShare] = React.useState(false);
 
   return (
-    <div className='w-full p-3 rounded-md border space-y-4'>
+    <div className='w-full p-3 rounded-md border border-border bg-card space-y-4'>
       <div className='flex items-center gap-3'>
         <Avatar
           image={friend.image}

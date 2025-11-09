@@ -17,7 +17,7 @@ export const Playlist: React.FC = async () => {
         <AddFriend playlist={playlist} />
       </div>
 
-      <div className='w-full overflow-auto rounded-md border border-border'>
+      <div className='w-full overflow-auto border border-border scrollbar-thin scrollbar-thumb-primary scrollbar-track-background rounded-md '>
         <table className='w-full border-collapse text-sm'>
           <GamesTableHead />
           <GamesTableBody ratingsMatrix={ratingsMatrix} />

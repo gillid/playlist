@@ -48,7 +48,7 @@ export const AddFriendModalSearchResults: React.FC<{
   }
 
   return (
-    <div className='flex-1 overflow-y-auto space-y-2'>
+    <div className='flex-1 pr-1 pb-1 overflow-y-auto scrollbar-thin scrollbar-track-transparent scrollbar-thumb-primary space-y-2'>
       {results.map((friend) => {
         const isAlreadyInPlaylist = participantsIds.includes(friend.steamId64);
 

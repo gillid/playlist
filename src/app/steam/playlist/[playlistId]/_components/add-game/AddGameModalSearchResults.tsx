@@ -40,7 +40,7 @@ export const AddGameModalSearchResults: React.FC<{
     );
   }
 
-  if (!data) {
+  if (!data || data.length === 0) {
     return (
       <InlineNotification
         type='info'
@@ -53,7 +53,7 @@ export const AddGameModalSearchResults: React.FC<{
   const gamesInPlaylist = playlist.games.map((game) => game.steamAppId);
 
   return (
-    <div className='flex-1 overflow-y-auto space-y-2'>
+    <div className='flex-1 pr-1 pb-1 overflow-y-auto scrollbar-thin scrollbar-track-transparent scrollbar-thumb-primary space-y-2'>
       {data.map((game) => {
         const isAlreadyInPlaylist = gamesInPlaylist.includes(game.appid);
 
