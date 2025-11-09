@@ -1,30 +1,18 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Playlist
 
-## Getting Started
+This app allows creating &#34;playlists&#34; - lists of Steam games,
+which can be shared with friends and rated.
 
-First, run the development server:
+Link - [https://playlist.gillid.pro/](https://playlist.gillid.pro/)
 
-```bash
-pnpm dev
-```
+## Tech stack
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- Foundation: Next.js with deployment to Vercel
+- UI and styling: Tailwind CSS + shadcn/ui + lucide-react + motion
+- DB: Prisma (PostgreSQL)
+- Auth: better-auth
+- Steam API
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Privacy
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Steam API provides only publicly available player profile data, for example, nickname, avatar, friendlist, and other things that can be accessed via your steam page according to your privacy settings. This never includes personal data like email, phone number, and so on. This app neither stores nor even has access to your private information.
