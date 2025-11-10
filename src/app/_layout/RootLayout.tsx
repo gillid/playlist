@@ -36,6 +36,7 @@ export const RootLayout = ({
         <footer className='flex-shrink-0 bg-gradient-to-b from-background to-gray-950 text-foreground text-center py-2'>
           <Link
             href='/about'
+            prefetch={false}
             className='text-sm text-muted-foreground hover:underline'
           >
             About
