@@ -13,6 +13,7 @@ model SteamProfile {
   ownedPlaylists SteamPlaylist[]           @relation("SteamPlaylistOwner")
   playlists      SteamPlaylist[]           @relation("SteamPlaylistToSteamProfile")
   gameRatings    SteamPlaylistGameRating[]
+  playlistUpdates SteamPlaylistUpdate[]    @relation("SteamProfileToPlaylistUpdate")
 
   @@map("steam_profile")
 }
@@ -29,6 +30,7 @@ model SteamPlaylist {
   owner        SteamProfile        @relation("SteamPlaylistOwner", fields: [ownerId], references: [id])
   participants SteamProfile[]      @relation("SteamPlaylistToSteamProfile")
   games        SteamPlaylistGame[]
+  updates      SteamPlaylistUpdate[] @relation("SteamPlaylistToUpdate")
 
   @@index([ownerId])
   @@map("steam_playlist")
@@ -71,4 +73,21 @@ model SteamPlaylistGameRating {
   @@unique([gameId, profileId])
   @@index([profileId])
   @@map("steam_playlist_game_rating")
+}
+
+model SteamPlaylistUpdate {
+  // Data fields
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  // FKs and relations
+  playlistId String
+  playlist   SteamPlaylist @relation("SteamPlaylistToUpdate", fields: [playlistId], references: [id], onDelete: Cascade)
+  profileId  String
+  profile    SteamProfile  @relation("SteamProfileToPlaylistUpdate", fields: [profileId], references: [id], onDelete: Cascade)
+
+  @@unique([playlistId, profileId])
+  @@index([profileId])
+  @@map("steam_playlist_update")
 }

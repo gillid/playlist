@@ -6,6 +6,9 @@ const playlistInclude = {
   participants: true,
   owner: true,
   games: true,
+  updates: {
+    select: { id: true },
+  },
 } as const satisfies Prisma.SteamPlaylistInclude;
 
 type PlaylistWithRelations = Prisma.SteamPlaylistGetPayload<{
@@ -23,7 +26,13 @@ export const getPlaylists = cache(
           { participants: { some: { id: profile.id } } },
         ],
       },
-      include: playlistInclude,
+      include: {
+        ...playlistInclude,
+        updates: {
+          where: { profileId: profile.id },
+          select: { id: true },
+        },
+      },
     } satisfies Prisma.SteamPlaylistFindManyArgs);
 
     if (!playlists.length) {

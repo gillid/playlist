@@ -134,7 +134,10 @@ const main = async () => {
   ) => {
     return prisma.steamPlaylistGameRating.upsert({
       where: {
-        id: `${gameId}-${profileId}`,
+        gameId_profileId: {
+          gameId,
+          profileId,
+        },
       },
       update: {},
       create: {
@@ -153,9 +156,26 @@ const main = async () => {
   await upsertRating(playlist2.games[1].id, fakeProfiles[0].id, 'YES');
   await upsertRating(playlist2.games[1].id, fakeProfiles[2].id, 'YES');
 
-  // await upsertRating(playlist2.games[2].id, mainUserProfile.id, 'PENDING');
   await upsertRating(playlist2.games[2].id, fakeProfiles[0].id, 'YES');
-  // await upsertRating(playlist2.games[2].id, fakeProfiles[2].id, 'PENDING');
+
+  const upsertUpdate = async (playlistId: string, profileId: string) => {
+    return prisma.steamPlaylistUpdate.upsert({
+      where: {
+        playlistId_profileId: {
+          playlistId,
+          profileId,
+        },
+      },
+      update: {},
+      create: {
+        playlistId,
+        profileId,
+      },
+    });
+  };
+
+  await upsertUpdate('2', mainUserProfile.id);
+  await upsertUpdate('3', mainUserProfile.id);
 };
 
 main()

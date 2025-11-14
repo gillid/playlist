@@ -21,6 +21,7 @@ export const Playlists: React.FC = async () => {
       {playlists.map((playlist) => {
         const participants = [playlist.owner, ...playlist.participants];
         const games = playlist.games;
+        const hasUpdates = playlist.updates.length > 0;
 
         return (
           <li key={playlist.id} className='h-full'>
@@ -28,7 +29,16 @@ export const Playlists: React.FC = async () => {
               href={`/steam/playlist/${playlist.id}`}
               className='block h-full'
             >
-              <Card className='h-full transition-colors hover:bg-accent/40 focus-within:ring-2 focus-within:ring-ring'>
+              <Card className='relative h-full transition-colors hover:bg-accent/40 focus-within:ring-2 focus-within:ring-ring'>
+                {hasUpdates && (
+                  <span
+                    className='absolute -top-1 -right-1 block h-3 w-3 rounded-full bg-blue-500 ring-2 ring-background'
+                    aria-label='Unread updates'
+                    title='Unread updates'
+                  >
+                    <span className='sr-only'>Unread updates</span>
+                  </span>
+                )}
                 <CardContent className='p-4'>
                   <div className='flex items-center justify-between gap-2'>
                     <div className='font-medium truncate' title={playlist.name}>
