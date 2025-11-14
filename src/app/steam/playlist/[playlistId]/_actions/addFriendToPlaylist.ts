@@ -5,6 +5,7 @@ import { z } from 'zod';
 import { prisma } from '@/libs/prisma';
 import { steam } from '@/libs/steam';
 import { getSteamProfile } from '../../../_functions/getSteamProfile';
+import { updateUpdates } from '../_functions/updateUpdates';
 
 const argSchema = z.object({
   playlistId: z.string(),
@@ -70,6 +71,8 @@ export async function addFriendToPlaylist(
       },
     },
   });
+
+  await updateUpdates(playlistId);
 
   refresh();
 

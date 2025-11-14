@@ -4,6 +4,7 @@ import { refresh } from 'next/cache';
 import { z } from 'zod';
 import { prisma, type RatingValue } from '@/libs/prisma';
 import { getSteamProfile } from '../../../_functions/getSteamProfile';
+import { updateUpdates } from '../_functions/updateUpdates';
 
 const argSchema = z.object({
   gameId: z.string(),
@@ -22,7 +23,7 @@ export const rateGame = async (
 
   const { gameId, rating } = argSchema.parse(arg);
 
-  await prisma.steamPlaylistGameRating.upsert({
+  const updated = await prisma.steamPlaylistGameRating.upsert({
     where: {
       gameId_profileId: {
         gameId,
@@ -37,7 +38,16 @@ export const rateGame = async (
       profileId: steamProfile.id,
       value: rating,
     },
+    include: {
+      game: {
+        include: {
+          playlist: true,
+        },
+      },
+    },
   });
+
+  await updateUpdates(updated.game.playlist.id);
 
   refresh();
 };

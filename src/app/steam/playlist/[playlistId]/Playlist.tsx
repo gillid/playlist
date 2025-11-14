@@ -1,6 +1,7 @@
 import React from 'react';
 import { AddFriend } from './_components/add-friend/AddFriend';
 import { AddGame } from './_components/add-game/AddGame';
+import { clearUpdates } from './_functions/clearUpdates';
 import { getPlaylistRatingsMatrix } from './_functions/getPlaylistRatingsMatrix';
 import { PlaylistProvider } from './_providers/PlaylistProvider';
 import { GamesTableBody } from './GamesTableBody';
@@ -9,6 +10,8 @@ import { GamesTableHead } from './GamesTableHead';
 export const Playlist: React.FC = async () => {
   const ratingsMatrix = await getPlaylistRatingsMatrix();
   const playlist = PlaylistProvider.get();
+
+  await clearUpdates(playlist.id);
 
   return (
     <div className='space-y-4'>
