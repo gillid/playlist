@@ -1,4 +1,6 @@
 import React from 'react';
+import { Analytics } from '@vercel/analytics/next';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import Link from 'next/link';
@@ -33,6 +35,8 @@ const RootLayout = ({
         <Header />
         <main className='flex-1 flex flex-col bg-background text-foreground'>
           {children}
+          <Analytics />
+          <SpeedInsights />
         </main>
         <footer className='flex-shrink-0 bg-gradient-to-b from-background to-gray-950 text-foreground text-center py-2'>
           <Link
