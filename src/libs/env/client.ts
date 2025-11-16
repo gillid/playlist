@@ -3,6 +3,7 @@ import type { ClientEnv } from './Env';
 const clientEnvStorage: Record<keyof ClientEnv, unknown> = {
   NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
   NEXT_PUBLIC_AUTH_PATH: process.env.NEXT_PUBLIC_AUTH_PATH,
+  NEXT_PUBLIC_VAPID_KEY: process.env.NEXT_PUBLIC_VAPID_KEY,
 };
 
 export const getClientEnv = <K extends keyof ClientEnv>(

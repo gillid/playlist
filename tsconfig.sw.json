@@ -1,0 +1,10 @@
+{
+  "extends": "./tsconfig",
+  "compilerOptions": {
+    "lib": ["esnext", "webworker"]
+  },
+  "include": [
+    "**/*.js"
+  ],
+  "files": ["./public/sw.js"]
+}
