@@ -166,7 +166,7 @@ const main = async () => {
           profileId,
         },
       },
-      update: {},
+      update: { isPushed: false },
       create: {
         playlistId,
         profileId,

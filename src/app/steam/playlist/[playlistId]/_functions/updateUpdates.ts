@@ -36,6 +36,7 @@ export const updateUpdates = async (playlistId: string) => {
       },
     },
     data: {
+      isPushed: false,
       updatedAt: new Date(),
     },
   });

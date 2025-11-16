@@ -13,4 +13,5 @@ export type ServerEnv = ClientEnv & {
   BETTER_AUTH_SECRET: string;
   STEAM_API_KEY: string;
   PRIVATE_VAPID_KEY: string;
+  CRON_SECRET: string;
 };
