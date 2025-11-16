@@ -1,0 +1,12 @@
+model UserWebPushSubscription {
+  // Data fields
+  endpoint String @id // unique endpoint acts as identifier
+  keys     Json // contains { p256dh, auth }
+
+  // FKs and relations
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("user_web_push_subscription")
+}
