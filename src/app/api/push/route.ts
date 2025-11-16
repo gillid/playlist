@@ -17,8 +17,6 @@ export async function GET(request: NextRequest) {
     getServerEnv('PRIVATE_VAPID_KEY')
   );
 
-  const debounceMoment = new Date(Date.now() - 5 * 60 * 1000);
-
   const subscriptions = await prisma.userWebPushSubscription.findMany({
     include: {
       user: {
@@ -27,7 +25,6 @@ export async function GET(request: NextRequest) {
             include: {
               playlistUpdates: {
                 where: {
-                  updatedAt: { lt: debounceMoment },
                   isPushed: false,
                 },
                 include: {
