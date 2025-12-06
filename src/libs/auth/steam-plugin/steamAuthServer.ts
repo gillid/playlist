@@ -108,8 +108,7 @@ export const steamAuthServer = (
             }
 
             const session = await ctx.context.internalAdapter.createSession(
-              user.id,
-              ctx
+              user.id
             );
 
             await setSessionCookie(ctx, { session, user });
